@@ -4,6 +4,7 @@ import com.example.lab02emt.model.enums.BookCategory;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -20,6 +21,8 @@ public class Book {
     @OneToOne
     Author author;
 
+    LocalDateTime dateRented;
+
     Integer availableCopies;
 
     public Book() {
@@ -30,5 +33,6 @@ public class Book {
         this.bookCategory = bookCategory;
         this.author = author;
         this.availableCopies = availableCopies;
+        this.dateRented=null;
     }
 }

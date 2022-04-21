@@ -2,6 +2,7 @@ package com.example.lab02emt.service.impl;
 
 import com.example.lab02emt.model.Author;
 import com.example.lab02emt.model.Book;
+import com.example.lab02emt.model.dto.BookDto;
 import com.example.lab02emt.model.enums.BookCategory;
 import com.example.lab02emt.model.exceptions.AuthorNotFoundException;
 import com.example.lab02emt.model.exceptions.BookNotFoundException;
@@ -10,7 +11,9 @@ import com.example.lab02emt.repository.BookRepository;
 import com.example.lab02emt.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl  implements BookService {
@@ -25,8 +28,8 @@ public class BookServiceImpl  implements BookService {
 
 
     @Override
-    public Book findById(Long id) {
-        return bookRepository.findById(id).orElseThrow(()->new BookNotFoundException("Book with id:"+id+" is not found"));
+    public Optional<Book> findById(Long id) {
+        return bookRepository.findById(id);
     }
 
     @Override
@@ -35,34 +38,36 @@ public class BookServiceImpl  implements BookService {
     }
 
     @Override
-    public Book delete(Long id) {
-        Book book=bookRepository.findById(id).orElseThrow(()->new BookNotFoundException("Book with id:"+id+" is not found"));
+    public Optional<Book>  delete(Long id) {
+        Book book=bookRepository.findById(id)
+                .orElseThrow(()->new BookNotFoundException("Book with id:"+id+" is not found"));
         bookRepository.delete(book);
-        return book;
+        return Optional.of(book);
     }
 
     @Override
-    public Book create(String name, BookCategory bookCategory, Long authorId, Integer availableCopies) {
-       Author author=authorRepository.findById(authorId).orElseThrow(()->new AuthorNotFoundException("Author with id:"+authorId+"is not found"));
-       Book book=new Book(name,bookCategory,author,availableCopies);
-       return bookRepository.save(book);
+    public Optional<Book>  create(BookDto bookDto) {
+       Author author=authorRepository.findById(bookDto.getAuthorId())
+               .orElseThrow(()->new AuthorNotFoundException("Author with id:"+bookDto.getAuthorId()+"is not found"));
+       Book book=new Book(bookDto.getName(),bookDto.getBookCategory(),author,bookDto.getAvailableCopies());
+       return Optional.of(bookRepository.save(book));
     }
 
     @Override
-    public Book update(Long id, String name, BookCategory bookCategory, Long authorId, Integer availableCopies) {
+    public Optional<Book>  update(Long id, BookDto bookDto) {
         Book book=bookRepository.findById(id).orElseThrow(()->new BookNotFoundException("Book with id:"+id+" is not found"));
-        Author author=authorRepository.findById(authorId).orElseThrow(()->new AuthorNotFoundException("Author with id:"+authorId+"is not found"));
-        book.setBookCategory(bookCategory);
+        Author author=authorRepository.findById(bookDto.getAuthorId())
+                .orElseThrow(()->new AuthorNotFoundException("Author with id:"+bookDto.getAuthorId()+"is not found"));
+        book.setBookCategory(bookDto.getBookCategory());
         book.setAuthor(author);
-        book.setAvailableCopies(availableCopies);
-        return bookRepository.save(book);
+        book.setAvailableCopies(bookDto.getAvailableCopies());
+        return Optional.of(bookRepository.save(book));
     }
 
     @Override
-    public Book rent(Long id) {
+    public Optional<Book> rent(Long id) {
         Book book=bookRepository.findById(id).orElseThrow(()->new BookNotFoundException("Book with id:"+id+" is not found"));
-        Integer availableCopiesAfterRent=book.getAvailableCopies()-1;
-        book.setAvailableCopies(availableCopiesAfterRent);
-        return book;
+        book.setDateRented(LocalDateTime.now());
+        return Optional.of(book);
     }
 }

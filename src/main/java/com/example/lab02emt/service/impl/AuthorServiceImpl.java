@@ -5,6 +5,8 @@ import com.example.lab02emt.model.exceptions.AuthorNotFoundException;
 import com.example.lab02emt.repository.AuthorRepository;
 import com.example.lab02emt.service.AuthorService;
 
+import java.util.Optional;
+
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
@@ -13,7 +15,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author findById(Long id) {
-        return authorRepository.findById(id).orElseThrow(()->new AuthorNotFoundException("Author with id:"+id+"is not found"));
+    public Optional<Author> findById(Long id) {
+        return authorRepository.findById(id);
     }
 }
