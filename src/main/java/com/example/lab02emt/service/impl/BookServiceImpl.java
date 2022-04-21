@@ -9,6 +9,8 @@ import com.example.lab02emt.model.exceptions.BookNotFoundException;
 import com.example.lab02emt.repository.AuthorRepository;
 import com.example.lab02emt.repository.BookRepository;
 import com.example.lab02emt.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -35,6 +37,11 @@ public class BookServiceImpl  implements BookService {
     @Override
     public List<Book> listAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public Page<Book> findAllWithPagination(Pageable pageable) {
+        return this.bookRepository.findAll(pageable);
     }
 
     @Override

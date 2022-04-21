@@ -3,6 +3,7 @@ package com.example.lab02emt.web.restApi;
 import com.example.lab02emt.model.Book;
 import com.example.lab02emt.model.dto.BookDto;
 import com.example.lab02emt.service.BookService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,10 @@ public class BookRestController {
     @GetMapping
     public List<Book> findAll(){
         return bookService.listAll();
+    }
+    @GetMapping("/pagination")
+    public List<Book> findAllWithPagination(Pageable pageable){
+        return bookService.findAllWithPagination(pageable).getContent();
     }
 
     @GetMapping("/{id}")
