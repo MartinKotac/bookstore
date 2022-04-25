@@ -79,4 +79,12 @@ public class BookServiceImpl  implements BookService {
         book.setRented(true);
         return Optional.of(this.bookRepository.save(book));
     }
+
+    @Override
+    public Optional<Book> save(String name, BookCategory category, Long author, Integer availableCopies) {
+        Author author1 = this.authorRepository.findById(author).orElseThrow(() -> new AuthorNotFoundException("Nema veze"));
+        Book book = new Book(name, category, author1, availableCopies);
+        return Optional.of(this.bookRepository.save(book));
+
+    }
 }

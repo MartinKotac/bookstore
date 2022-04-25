@@ -11,11 +11,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
-   Optional<Book> findById(Long id);
+    Optional<Book> findById(Long id);
+
     List<Book> listAll();
+
     Page<Book> findAllWithPagination(Pageable pageable);
-    Optional<Book>  delete(Long id);
-    Optional<Book>  create(BookDto bookDto);
-    Optional<Book>  update(Long id,BookDto bookDto);
-    Optional<Book>  rent(Long id);
+
+    Optional<Book> delete(Long id);
+
+    Optional<Book> create(BookDto bookDto);
+
+    Optional<Book> update(Long id, BookDto bookDto);
+
+    Optional<Book> rent(Long id);
+
+    Optional<Book> save(String name, BookCategory category, Long author, Integer availableCopies);
 }

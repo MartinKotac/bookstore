@@ -9,4 +9,5 @@ public interface AuthorService {
 
     Optional<Author> findById(Long id);
     List<Author> findAll();
+    Author create(String name, String surname, Long countryId);
 }
