@@ -2,6 +2,7 @@ package com.example.lab02emt.web.restApi;
 
 import com.example.lab02emt.model.Book;
 import com.example.lab02emt.model.dto.BookDto;
+import com.example.lab02emt.model.enums.BookCategory;
 import com.example.lab02emt.service.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,10 @@ public class BookRestController {
     @GetMapping
     public List<Book> findAll(){
         return bookService.listAll();
+    }
+    @GetMapping("/categories")
+    public BookCategory[] findAllCategories(){
+        return BookCategory.values();
     }
     @GetMapping("/pagination")
     public List<Book> findAllWithPagination(Pageable pageable){

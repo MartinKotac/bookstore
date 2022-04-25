@@ -21,7 +21,7 @@ public class Book {
     @OneToOne
     Author author;
 
-    LocalDateTime dateRented;
+    boolean rented;
 
     Integer availableCopies;
 
@@ -33,6 +33,6 @@ public class Book {
         this.bookCategory = bookCategory;
         this.author = author;
         this.availableCopies = availableCopies;
-        this.dateRented=null;
+        this.rented=false;
     }
 }

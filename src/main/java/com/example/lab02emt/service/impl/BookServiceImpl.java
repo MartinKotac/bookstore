@@ -73,8 +73,10 @@ public class BookServiceImpl  implements BookService {
 
     @Override
     public Optional<Book> rent(Long id) {
-        Book book=bookRepository.findById(id).orElseThrow(()->new BookNotFoundException("Book with id:"+id+" is not found"));
-        book.setDateRented(LocalDateTime.now());
-        return Optional.of(book);
+        Book book=this.findById(id).orElseThrow(()->new BookNotFoundException("Book with id: "+id+"is not found"));
+        Integer copies=book.getAvailableCopies();
+        book.setAvailableCopies(copies-1);
+        book.setRented(true);
+        return Optional.of(this.bookRepository.save(book));
     }
 }
